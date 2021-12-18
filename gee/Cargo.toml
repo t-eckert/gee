@@ -1,0 +1,7 @@
+[package]
+name = "gee"
+description = "An experimental Python WSGI."
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
