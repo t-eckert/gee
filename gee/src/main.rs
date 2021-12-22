@@ -1,19 +1,31 @@
+extern crate log;
 extern crate pretty_env_logger;
 #[macro_use]
-extern crate log;
 
 mod application;
+mod config;
 mod environ;
-mod server;
+mod upstream;
 
-use std::net::SocketAddr;
+use std::{env, net::SocketAddr};
 
-use server::start;
+use config::Config;
+use upstream::Server;
 
 #[tokio::main]
 async fn main() {
     pretty_env_logger::init();
-    let socket_address = SocketAddr::from(([127, 0, 0, 1], 8080));
 
-    start(socket_address).await;
+    let args: Vec<String> = env::args().collect();
+    let default_root_dir = ".".to_owned();
+    let root_dir = args.get(1).unwrap_or(&default_root_dir).to_owned();
+    let address = SocketAddr::from(([127, 0, 0, 1], 8080));
+
+    let config = Config {
+        address,
+        root_dir,
+        static_dir: "/static".to_owned(),
+    };
+
+    Server { config }.start().await.unwrap();
 }
