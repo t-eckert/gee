@@ -2,8 +2,8 @@ extern crate log;
 extern crate pretty_env_logger;
 #[macro_use]
 
-mod application;
 mod config;
+mod downstream;
 mod environ;
 mod upstream;
 

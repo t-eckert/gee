@@ -126,7 +126,7 @@ impl Environ {
         }
     }
 
-    pub fn from_request(req: Request<Body>) -> Self {
+    pub fn from_request(req: &Request<Body>) -> Self {
         Self::new(
             req.method().clone(),
             "app".to_owned(),
