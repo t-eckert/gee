@@ -1,5 +1,6 @@
 use log::{debug, info};
 use std::{
+    collections::HashMap,
     future,
     task::{Context, Poll},
 };
@@ -16,8 +17,8 @@ pub struct Service {
     /// `root_dir` is the absolute path to the directory where Gee is running.
     pub root_dir: String,
 
-    /// `static_dir` is the relative path to static content being served by Gee.
-    pub static_dir: String,
+    // `static_routes` maps routes on the server to directories of static assets and serves the content at those routes.
+    pub static_routes: HashMap<String, String>,
 }
 
 impl Service {
@@ -25,13 +26,31 @@ impl Service {
     /// if the request path is a child of the `static_dir` and is therefore a request for a static file/asset. This
     /// does not check if the file being requested exists.
     fn is_static_request(&self, path: &str) -> bool {
-        let static_dir_length = self.static_dir.len();
-
-        if path.len() < static_dir_length {
-            return false;
+        for static_route in &self.static_routes {
+            if path.starts_with(static_route.0) {
+                return true;
+            }
         }
 
-        self.static_dir == path[0..static_dir_length]
+        false
+    }
+
+    fn resolve_static_path(&self, path: &str) -> Option<String> {
+        let matching_route = self
+            .static_routes
+            .iter()
+            .filter(|static_route| path.starts_with(static_route.0))
+            .next();
+
+        let static_route = match matching_route {
+            Some(static_route) => static_route,
+            None => return None,
+        };
+
+        let mut static_path = static_route.1.clone();
+        static_path.push_str(&path[static_route.0.len()..path.len()]);
+
+        Some(static_path)
     }
 }
 
@@ -51,15 +70,21 @@ impl HyperService<Request<Body>> for Service {
         debug!("{:#?}", req);
 
         let environ = Environ::from_request(&req);
-        let content = if self.is_static_request(req.uri().path()) {
-            serve_file(req.uri().path())
+        let request_result = if self.is_static_request(req.uri().path()) {
+            let static_path = self
+                .resolve_static_path(req.uri().path())
+                .expect("Cannot resolve static path");
+            serve_file(&static_path)
         } else {
             call_application(environ)
         };
 
-        let body = Body::from(content.unwrap_or(vec![]));
-        let rsp = rsp.status(200).body(body).unwrap();
-        future::ready(Ok(rsp))
+        let response = match request_result {
+            Some(content) => rsp.status(200).body(Body::from(content)).unwrap(),
+            None => rsp.status(404).body(Body::from(vec![])).unwrap(),
+        };
+
+        future::ready(Ok(response))
     }
 }
 
@@ -72,7 +97,7 @@ mod test {
         #[derive(Debug, Clone)]
         struct Case {
             pub root_dir: String,
-            pub static_dir: String,
+            pub static_routes: HashMap<String, String>,
             pub path: String,
             pub expected: bool,
         }
@@ -80,19 +105,19 @@ mod test {
         let cases = vec![
             Case {
                 root_dir: "/".to_owned(),
-                static_dir: "/static".to_owned(),
+                static_routes: hashmap!["/static".to_owned() => "./static".to_owned()],
                 path: "/static".to_owned(),
                 expected: true,
             },
             Case {
                 root_dir: "/".to_owned(),
-                static_dir: "/static".to_owned(),
+                static_routes: hashmap!["/static".to_owned() => "./static".to_owned()],
                 path: "/static/file.json".to_owned(),
                 expected: true,
             },
             Case {
                 root_dir: "/".to_owned(),
-                static_dir: "/static".to_owned(),
+                static_routes: hashmap!["/static".to_owned() => "./static".to_owned()],
                 path: "/".to_owned(),
                 expected: false,
             },
@@ -101,7 +126,7 @@ mod test {
         for case in cases {
             let service = Service {
                 root_dir: case.root_dir.clone(),
-                static_dir: case.static_dir.clone(),
+                static_routes: case.static_routes.clone(),
             };
 
             let actual = service.is_static_request(&case.path);

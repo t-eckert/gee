@@ -24,7 +24,7 @@ impl<T> HyperService<T> for ServiceBuilder {
     fn call(&mut self, _: T) -> Self::Future {
         future::ready(Ok(Service {
             root_dir: self.config.root_dir.clone(),
-            static_dir: self.config.static_dir.clone(),
+            static_routes: self.config.static_routes.clone(),
         }))
     }
 }
