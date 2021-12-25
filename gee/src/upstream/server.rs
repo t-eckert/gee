@@ -1,4 +1,5 @@
 use hyper::Server as HyperServer;
+use log::info;
 
 use super::service_builder::ServiceBuilder;
 use crate::config::Config;
@@ -16,6 +17,7 @@ impl Server {
             config: self.config.clone(),
         });
         server.await?;
+        info!("Gee server running at {}", self.config.address);
         Ok(())
     }
 }

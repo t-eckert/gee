@@ -26,20 +26,16 @@ impl Service {
     /// if the request path is a child of the `static_dir` and is therefore a request for a static file/asset. This
     /// does not check if the file being requested exists.
     fn is_static_request(&self, path: &str) -> bool {
-        for static_route in &self.static_routes {
-            if path.starts_with(static_route.0) {
-                return true;
-            }
-        }
-
-        false
+        self.static_routes
+            .iter()
+            .any(|(server_path, _)| path.starts_with(server_path))
     }
 
     fn resolve_static_path(&self, path: &str) -> Option<String> {
         let matching_route = self
             .static_routes
             .iter()
-            .filter(|static_route| path.starts_with(static_route.0))
+            .filter(|(server_path, _)| path.starts_with(*server_path))
             .next();
 
         let static_route = match matching_route {
@@ -49,6 +45,10 @@ impl Service {
 
         let mut static_path = static_route.1.clone();
         static_path.push_str(&path[static_route.0.len()..path.len()]);
+
+        if static_path.chars().last().unwrap() == '/' {
+            static_path.push_str("index.html")
+        }
 
         Some(static_path)
     }

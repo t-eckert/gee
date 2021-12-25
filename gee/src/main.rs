@@ -28,7 +28,7 @@ fn build_config(args: Vec<String>) -> Config {
     let default_root_dir = ".".to_owned();
     let root_dir = args.get(1).unwrap_or(&default_root_dir).to_owned();
 
-    let static_routes = hashmap!["/static".to_owned() => "./static".to_owned()];
+    let static_routes = hashmap!["/static".to_owned() => "./static/".to_owned()];
 
     Config {
         address,
