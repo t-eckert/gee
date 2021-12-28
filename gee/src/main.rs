@@ -16,6 +16,7 @@ use upstream::Server;
 #[tokio::main]
 async fn main() {
     pretty_env_logger::init();
+    pyo3::prepare_freethreaded_python();
 
     let args: Vec<String> = env::args().collect();
     let config = build_config(args);
