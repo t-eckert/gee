@@ -1,0 +1,19 @@
+{% extends 'page.html'%} {% block content%}
+<section class="w-full mt-40 p-4 flex flex-row items-center justify-center">
+  <div>
+    <span class="font-medium font-mono">404</span>
+    <h1 class="font-medium text-xl">Requested resource could not be found.</h1>
+    <a
+      href="{{ url_for('home') }}"
+      class="
+        font-medium
+        decoration decoration-2
+        underline underline-offset-4
+        transition
+        hover:text-blue-400
+      "
+      >Return home</a
+    >
+  </div>
+</section>
+{% endblock %}

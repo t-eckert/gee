@@ -1,0 +1,106 @@
+{% extends "page.html" %} {%block nav %}
+<nav class="fixed backdrop-blur w-full px-4 py-4 text-white">
+  <div class="mx-auto max-w-6xl flex flex-row justify-between items-center">
+    <div>
+      <a href="{{ url_for('home') }}" class="font-medium">Gee</a>
+      <span class="text-sm">v0.1.0</span>
+    </div>
+    <a href="https://github.com/t-eckert/gee" class="">Source code</a>
+  </div>
+</nav>
+{% endblock %} {% block splash %}
+<section
+  class="
+    w-full
+    h-screen
+    p-4
+    flex flex-row
+    items-center
+    justify-center
+    bg-gradient-to-br
+    from-indigo-900
+    via-indigo-700
+    to-purple-800
+  "
+>
+  <div class="mx-auto max-w-xl flex flex-col gap-10">
+    <p class="font-medium text-4xl text-white">
+      <span
+        class="
+          text-transparent
+          bg-gradient-to-tr
+          from-red-500
+          to-yellow-400
+          bg-clip-text
+        "
+        >Gee</span
+      >
+      is an experimental Python web server gateway interface,
+      <a
+        href="https://www.fullstackpython.com/wsgi-servers.html"
+        class="
+          decoration decoration-2
+          underline underline-offset-4
+          transition
+          hover:text-yellow-400
+        "
+        >WSGI</a
+      >.
+    </p>
+    <p class="font-medium text-white">
+      It is still early in development. If you are searching for a WSGI, I would
+      recommend using
+      <a
+        href="https://uwsgi-docs.readthedocs.io/en/latest/"
+        class="
+          decoration decoration-2
+          underline underline-offset-4
+          transition
+          hover:text-red-500
+        "
+        >uWSGI</a
+      >
+      or
+      <a
+        href="https://gunicorn.org/"
+        class="
+          decoration decoration-2
+          underline underline-offset-4
+          transition
+          hover:text-green-600
+        "
+        >Gunicorn</a
+      >
+      instead.
+    </p>
+    <div class="flex flex-row items-center gap-4">
+      <a
+        href="{{ url_for('docs', name='quickstart') }}"
+        class="
+          px-4
+          py-2
+          bg-white
+          rounded-sm
+          font-medium
+          shadow-sm
+          transition
+          hover:-translate-y-0.5 hover:shadow-lg
+        "
+        >Get started</a
+      >
+      <a
+        href="{{ url_for('docs', name='my-goals-for-gee') }}"
+        class="
+          font-medium
+          text-white
+          decoration decoration-2
+          underline underline-offset-4
+          transition
+          hover:text-yellow-400
+        "
+        >My goals for Gee</a
+      >
+    </div>
+  </div>
+</section>
+{% endblock %} {% block content %} {% endblock %}
