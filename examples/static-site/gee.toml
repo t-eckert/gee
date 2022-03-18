@@ -1,0 +1,4 @@
+address = "127.0.0.1"
+root_dir = "."
+static_routes = [{ "/" = "/" }]
+ignored_files = ["./ignore-me"]
