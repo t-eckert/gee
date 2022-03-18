@@ -1,9 +1,9 @@
-use std::{collections::HashMap, fmt};
-
 use hyper::{
     header::{HeaderValue, CONTENT_LENGTH, CONTENT_TYPE},
     Body, Method, Request, Version,
 };
+use serde::{ser::SerializeMap, Deserialize, Serialize, Serializer};
+use std::{collections::HashMap, fmt};
 
 /// UrlScheme enumerates the kinds of URL protocols supported by Gee.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -154,5 +154,18 @@ impl Environ {
 impl fmt::Display for Environ {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{:#?}", self)
+    }
+}
+
+impl Serialize for Environ {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut map = serializer.serialize_map(Some(self.http_variables.len()))?;
+        for (key, value) in self.http_variables.iter() {
+            map.serialize_entry(key, value)?;
+        }
+        map.end()
     }
 }
