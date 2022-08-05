@@ -1,7 +1,0 @@
-# What is a WSGI?
-
-Laborum nulla commodo ut Lorem sunt laboris consectetur eu fugiat Lorem ex deserunt. Non exercitation et qui amet deserunt nulla non veniam aliqua. Velit ipsum et mollit minim commodo amet do voluptate do exercitation sit veniam. Sint sit enim quis velit anim Lorem aute elit proident incididunt dolor velit aute. Consequat commodo sunt fugiat sit consectetur ipsum culpa excepteur cupidatat id occaecat laboris mollit elit.
-
-Laborum nulla commodo ut Lorem sunt laboris consectetur eu fugiat Lorem ex deserunt. Non exercitation et qui amet deserunt nulla non veniam aliqua. Velit ipsum et mollit minim commodo amet do voluptate do exercitation sit veniam. Sint sit enim quis velit anim Lorem aute elit proident incididunt dolor velit aute. Consequat commodo sunt fugiat sit consectetur ipsum culpa excepteur cupidatat id occaecat laboris mollit elit.
-
-Laborum nulla commodo ut Lorem sunt laboris consectetur eu fugiat Lorem ex deserunt. Non exercitation et qui amet deserunt nulla non veniam aliqua. Velit ipsum et mollit minim commodo amet do voluptate do exercitation sit veniam. Sint sit enim quis velit anim Lorem aute elit proident incididunt dolor velit aute. Consequat commodo sunt fugiat sit consectetur ipsum culpa excepteur cupidatat id occaecat laboris mollit elit.
