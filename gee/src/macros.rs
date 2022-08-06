@@ -1,3 +1,4 @@
+// hashmap! is like vec!, but for hashmaps.
 #[macro_export]
 macro_rules! hashmap {
     ($( $key: expr => $val: expr ),*) => {{

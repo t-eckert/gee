@@ -1,6 +1,6 @@
 [package]
 name = "gee"
-description = "Static server and Python WSGI."
+description = "Server for static files, Python apps, and routing with automatic SSL cert management."
 version = "0.1.0"
 edition = "2021"
 

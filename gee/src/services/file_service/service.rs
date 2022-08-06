@@ -1,3 +1,9 @@
+pub struct FileService {
+    config: FileServiceConfig
+}
+
+impl FileService {}
+
 pub fn static_service_handler(req: Request<Body>) -> Self::Future<Response<Body>> {
     let path = req.uri().path();
     let static_path = self

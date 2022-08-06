@@ -20,7 +20,7 @@ pub struct Server {
 impl Server {
     /// `new` creates a new `Server` instance using a config object.
     pub fn new(config: Config) -> Self {
-        let address = SocketAddr::new(config.address, config.port);
+        let address = SocketAddr::new(IpAddr::from([127, 0, 0, 1]), config.port);
 
         let server = HyperServer::bind(&address).serve(ServiceBuilder {
             config: config.clone(),
